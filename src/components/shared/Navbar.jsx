@@ -3,7 +3,7 @@
 const Navbar = () => {
   return (
     <div>
-      <div className="navbar navbar-glass">
+      <div className="navbar navbar-glass navbar-sticky">
 	<div className="navbar-start">
 		<a className="navbar-item">Ripple UI</a>
 	</div>
