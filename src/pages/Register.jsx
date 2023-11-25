@@ -1,10 +1,44 @@
 import { NavLink } from "react-router-dom";
+import Swal from "sweetalert2";
+import useAuth from "../myHooks/useAuth";
+import useAxiosPublic from "../myHooks/useAxiosPublic";
 
 
 const Register = () => {
+    const {createUser, updateUserInfo} = useAuth();
+    const axiosPublic = useAxiosPublic();
+        const handleRegister = event => {
+        event.preventDefault();
+        const form = event.target;
+        const name = form.name.value;
+        const email = form.email.value;
+        const password = form.password.value;
+        const photo = form.photo.value;
+        createUser(email, password)
+        .then(() => {
+            updateUserInfo(name, photo)
+            .then(() => {
+                const userData = {
+                    name,
+                    email,
+                    image: photo
+                }
+                axiosPublic.post('/users', userData)
+                .then(res => {
+                    console.log(res.data);
+                })
+                Swal.fire("User is created successfully");
+                form.reset();
+            })
+            .catch((err) => Swal.fire(err.message));
+        })
+        .catch(err => Swal.fire(err.message));
+    }
+         
+        
     return (
         <div>
-             <form  className="mx-auto flex w-full max-w-sm flex-col gap-6 mt-36">
+             <form  className="mx-auto flex w-full max-w-sm flex-col gap-6 mt-36" onSubmit={handleRegister}>
         <div className="flex flex-col items-center">
             <h1 className="text-3xl font-semibold">Register</h1>
             <p className="text-sm">create a new account here</p>

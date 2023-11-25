@@ -1,14 +1,35 @@
 import { NavLink } from "react-router-dom";
+import useAuth from "../myHooks/useAuth";
+import Swal from "sweetalert2";
+import { GoogleAuthProvider } from "firebase/auth";
 
 const Login = () => {
+    const {loginUser, googleLogin} = useAuth();
+	const handleLogin = event => {
+		event.preventDefault();
+		const form = event.target;
+		const email = form.email.value;
+		const password = form.password.value;
+		loginUser(email, password)
+		.then(() => {
+			Swal.fire("Logged in Successfully")
+			form.reset();
+	})
+		.catch(err => Swal.fire(err.message));
+	};
+	const handleGoogleLogin = () => {
+		const provider = new GoogleAuthProvider();
+		googleLogin(provider)
+		.then(() => Swal.fire("You are successfully logged in"))
+		.catch(err => Swal.fire(err.message));
+	}
     return (
-        <div className="mt-12">
-            <form className="mx-auto flex w-full max-w-lg flex-col rounded-xl border border-border bg-backgroundSecondary p-4 sm:p-20">
+        <div className="mx-auto flex w-full max-w-lg flex-col rounded-xl border border-border bg-backgroundSecondary p-4 sm:p-20 lg:mt-28" >
 	<div className="flex w-full flex-col gap-2">
-		<p>Sign in with</p>
+		<p>Login with</p>
 		<div className="flex w-full flex-col gap-2">
-			<button type="button" className="btn gap-2 bg-gray-5">
-				<svg stroke="currentColor" fill="currentColor" strokeWidth="0" version="1.1" viewBox="0 0 48 48" enablebackground="new 0 0 48 48" className="h-5 w-5" xmlns="http://www.w3.org/2000/svg">
+			<button type="button" onClick={handleGoogleLogin} className="btn gap-2 bg-gray-5">
+				<svg stroke="currentColor" fill="currentColor" strokeWidth="0" version="1.1" viewBox="0 0 48 48" className="h-5 w-5" xmlns="http://www.w3.org/2000/svg">
 					<path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path>
 					<path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657        C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path>
 					<path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36        c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path>
@@ -18,13 +39,13 @@ const Login = () => {
               c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
 					></path>
 				</svg>
-				<span>Sign up with google</span>
+				<span>Login with google</span>
 			</button>
 			<button type="button" className="btn gap-2 bg-gray-5">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className="h-5 w-5 fill-primary">
 					<path d="M31.937 6.093c-1.177 0.516-2.437 0.871-3.765 1.032 1.355-0.813 2.391-2.099 2.885-3.631-1.271 0.74-2.677 1.276-4.172 1.579-1.192-1.276-2.896-2.079-4.787-2.079-3.625 0-6.563 2.937-6.563 6.557 0 0.521 0.063 1.021 0.172 1.495-5.453-0.255-10.287-2.875-13.52-6.833-0.568 0.964-0.891 2.084-0.891 3.303 0 2.281 1.161 4.281 2.916 5.457-1.073-0.031-2.083-0.328-2.968-0.817v0.079c0 3.181 2.26 5.833 5.26 6.437-0.547 0.145-1.131 0.229-1.724 0.229-0.421 0-0.823-0.041-1.224-0.115 0.844 2.604 3.26 4.5 6.14 4.557-2.239 1.755-5.077 2.801-8.135 2.801-0.521 0-1.041-0.025-1.563-0.088 2.917 1.86 6.36 2.948 10.079 2.948 12.067 0 18.661-9.995 18.661-18.651 0-0.276 0-0.557-0.021-0.839 1.287-0.917 2.401-2.079 3.281-3.396z"></path>
 				</svg>
-				<span>Sign up with twitter</span>
+				<span>Login with twitter</span>
 			</button>
 			<button type="button" className="btn gap-2 bg-gray-5">
 				<svg width="21" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="github" className="svg-inline--fa fa-github fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
@@ -34,54 +55,42 @@ const Login = () => {
 					></path>
 				</svg>
 
-				<span>Sign up with github</span>
+				<span>Login with github</span>
 			</button>
 		</div>
 	</div>
 	<div className="divider my-6 text-xs text-content2">or continue with</div>
 
+	<form  onSubmit={handleLogin}>
 	<div className="form-group">
 		<div className="form-field">
 			<label className="form-label">Email address</label>
 
-			<input placeholder="Type here" type="email" className="input max-w-full" />
-			<label className="form-label">
-				<span className="form-label-alt">Please enter a valid email.</span>
-			</label>
+			<input placeholder="Type here" name="email" type="email" className="input max-w-full" />
 		</div>
 		<div className="form-field">
 			<label className="form-label">
 				<span>Password</span>
 			</label>
 			<div className="form-control">
-				<input placeholder="Type here" type="password" className="input max-w-full" />
-			</div>
-		</div>
-		<div className="form-field">
-			<div className="form-control justify-between">
-				<div className="flex gap-2">
-					<input type="checkbox" className="checkbox" />
-					<a href="#">Remember me</a>
-				</div>
-				<label className="form-label">
-					<a className="link link-underline-hover link-primary text-sm">Forgot your password?</a>
-				</label>
+				<input placeholder="Type here" name="password" type="password" className="input max-w-full" />
 			</div>
 		</div>
 		<div className="form-field pt-5">
 			<div className="form-control justify-between">
-				<button type="button" className="btn bg-[#457b9d] text-white w-full hover:bg-[#1d3557]">Sign in</button>
+				<button type="submit" className="btn btn-primary w-full">Login</button>
 			</div>
 		</div>
 
 		<div className="form-field">
 			<div className="form-control">
-			<NavLink className="link link-underline-hover link-primary text-sm" to="/register">Do not have an account? Register</NavLink>
+				{/* <a className="link link-underline-hover link-primary text-sm">Dont have an account? Register</a> */}
+                <NavLink className="link link-underline-hover link-primary text-sm" to="/register">Do not have an account? Register</NavLink>
 			</div>
 		</div>
 	</div>
-</form>
-        </div>
+	</form>
+</div>
     );
 };
 
