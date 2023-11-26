@@ -21,7 +21,8 @@ const Register = () => {
                 const userData = {
                     name,
                     email,
-                    image: photo
+                    image: photo,
+                    role: 'user'
                 }
                 axiosPublic.post('/users', userData)
                 .then(res => {
