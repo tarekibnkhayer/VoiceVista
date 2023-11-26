@@ -4,6 +4,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Surveys from "../pages/Surveys";
+import Pro from "../pages/Pro";
 
 const router = createBrowserRouter([
     {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
         {
           path: '/surveys',
           element: <Surveys></Surveys>
+        },
+        {
+          path: '/pro',
+          element: <Pro></Pro>
         }
       ]
     },
