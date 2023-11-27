@@ -3,7 +3,7 @@ import SectionTitle from "../shared/SectionTitle";
 const FeaturedSurveys = () => {
     return (
         <div>
-             <SectionTitle title="Featured Title"></SectionTitle>
+             <SectionTitle title="Featured Surveys"></SectionTitle>
         </div>
     );
 };

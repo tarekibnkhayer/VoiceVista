@@ -16,13 +16,7 @@ const Navbar = () => {
     !isPending && role === 'admin' && <NavLink to="/dashboard/adminHome" className="ml-5">Dashboard</NavLink>
   }
   {
-    !isPending && role === 'surveyor' && <NavLink to="/dashboard/surveyorHome" className="ml-5">Dashboard</NavLink>
-  }
-  {
-    !isPending && role === 'pro-user' && <NavLink to="/dashboard/proUserHome" className="ml-5">Dashboard</NavLink>
-  }
-  {
-    !isPending && role === 'user' && <NavLink to="/dashboard/userHome" className="ml-5">Dashboard</NavLink>
+    !isPending && role === 'surveyor' && <NavLink to="/surveyorDashboard" className="ml-5">Dashboard</NavLink>
   }
 	<NavLink to="/surveys" className="ml-5">Surveys</NavLink>
 	<NavLink to="/surveyDetails" className="ml-5">SurveyDetails</NavLink>
@@ -35,12 +29,12 @@ const Navbar = () => {
   };
   return (
     <div>
-      <div className="navbar navbar-sticky hidden lg:flex">
+      <div className="navbar navbar-sticky navbar-glass hidden lg:flex">
         <div className="navbar-start">
           <img
-            src="https://i.imgur.com/xR9jzDk.jpg"
+            src="https://i.imgur.com/Ci5vu8p.png"
             alt="website logo"
-            className="w-20"
+            className="w-12"
           />
         </div>
         <div className="navbar-center">{navLinks}</div>
@@ -57,7 +51,7 @@ const Navbar = () => {
                 Login
               </NavLink>
               <img
-                src="https://i.imgur.com/BSXLY0r.png"
+                src="https://i.imgur.com/Ci5vu8p.png"
                 alt=""
                 className="w-12"
               />
@@ -97,7 +91,7 @@ const Navbar = () => {
           </div>
           <div className="navbar-center">
             <img
-              src="https://i.imgur.com/xR9jzDk.jpg"
+              src="https://i.imgur.com/Ci5vu8p.png"
               alt="website logo"
               className="w-24"
             />

@@ -6,6 +6,8 @@ import Register from "../pages/Register";
 import Surveys from "../pages/Surveys";
 import Pro from "../pages/Pro";
 import PrivateRoutes from "./PrivateRoutes";
+import SurveyorDashboard from "../pages/SurveyorDashboard";
+import CreateSurvey from "../components/forDashboardPages/CreateSurvey";
 
 const router = createBrowserRouter([
     {
@@ -31,8 +33,17 @@ const router = createBrowserRouter([
         {
           path: '/pro',
           element: <PrivateRoutes><Pro></Pro></PrivateRoutes>
+        },
+        {
+          path: '/surveyorDashboard',
+          element: <SurveyorDashboard></SurveyorDashboard>
+        },
+        {
+          path: '/createSurvey',
+          element: <CreateSurvey></CreateSurvey>
         }
       ]
     },
+  
   ]);
   export default router;

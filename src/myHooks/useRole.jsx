@@ -13,6 +13,8 @@ const useRole = () => {
            if(user){
             const res = await axiosSecure.get(`/user-role?email=${user.email}`);
             return res.data?.role;
+           }else{
+            return null;
            }
         },
     });
