@@ -57,7 +57,7 @@ const CheckoutForm =  () => {
      Swal.fire('Card Error', cardError);
     }else{
       if(paymentIntent.status === 'succeeded'){
-        Swal.fire("Payment Successful");
+        Swal.fire("Payment Successful and Now You are a Pro User");
         setTransactionId(paymentIntent.id);
         const date = new Date();
         const utcDate = moment.utc(date);
@@ -67,9 +67,11 @@ const CheckoutForm =  () => {
           price: price,
           date: utcDate,
           transactionId: transactionId
-        }
-        const res = await axiosSecure.post('/payments', payment);
-        console.log(res.data);
+        };
+      await axiosSecure.post('/payments', payment);
+      // update the role of user into pro-user;
+      const res = await axiosSecure.patch(`/users?email=${user.email}`);
+      console.log(res.data);
       }
     }
   };
