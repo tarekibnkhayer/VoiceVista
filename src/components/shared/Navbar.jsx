@@ -3,12 +3,27 @@ import './Navbar.css'
 import useAuth from "../../myHooks/useAuth";
 import Swal from "sweetalert2";
 import {AiOutlineMenu} from 'react-icons/ai';
+import useRole from "../../myHooks/useRole";
 
 
 const Navbar = () => {
 	const {user, logoutUser} = useAuth();
+  const [role, isPending] = useRole();
 	const navLinks = <>
 	<NavLink to="/" className="ml-5">Home</NavLink>
+  {/* role based dashboard: */}
+  {
+    !isPending && role === 'admin' && <NavLink to="/dashboard/adminHome" className="ml-5">Dashboard</NavLink>
+  }
+  {
+    !isPending && role === 'surveyor' && <NavLink to="/dashboard/surveyorHome" className="ml-5">Dashboard</NavLink>
+  }
+  {
+    !isPending && role === 'pro-user' && <NavLink to="/dashboard/proUserHome" className="ml-5">Dashboard</NavLink>
+  }
+  {
+    !isPending && role === 'user' && <NavLink to="/dashboard/userHome" className="ml-5">Dashboard</NavLink>
+  }
 	<NavLink to="/surveys" className="ml-5">Surveys</NavLink>
 	<NavLink to="/surveyDetails" className="ml-5">SurveyDetails</NavLink>
 	<NavLink to="/pro" className="ml-5 bg-[#fec89a] px-3 py-2 rounded-full">Pro</NavLink>

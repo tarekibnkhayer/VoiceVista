@@ -26,9 +26,8 @@ const AuthProviders = ({children}) => {
               }
               else{
                 setUser(null);
-               axiosPublic.post('/logout').then((res) => {
-                setLoading(false)
-                console.log(res.data);
+               axiosPublic.post('/logout').then(() => {
+                setLoading(false);
             })
             .catch(err => console.error(err));
                 

@@ -2,11 +2,13 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../myHooks/useAuth";
 import Swal from "sweetalert2";
 import { GoogleAuthProvider } from "firebase/auth";
+import useAxiosPublic from "../myHooks/useAxiosPublic";
 
 const Login = () => {
     const {loginUser, googleLogin} = useAuth();
 	const location = useLocation();
 	const navigate = useNavigate();
+	const axiosPublic = useAxiosPublic();
 	const handleLogin = event => {
 		event.preventDefault();
 		const form = event.target;
@@ -25,10 +27,24 @@ const Login = () => {
 	})
 		.catch(err => Swal.fire(err.message));
 	};
+	
 	const handleGoogleLogin = () => {
 		const provider = new GoogleAuthProvider();
 		googleLogin(provider)
-		.then(() => Swal.fire("You are successfully logged in"))
+		.then((res) => {
+			const user = {
+				name: res.user?.displayName,
+				email: res.user?.email,
+				role: 'user'
+			};
+			axiosPublic.post('/users', user)
+			.then(res => {
+				console.log(res.data);
+				if(res.data._id){
+					Swal.fire("Your account created successfully");
+				}
+			})
+		})
 		.catch(err => Swal.fire(err.message));
 	}
     return (
