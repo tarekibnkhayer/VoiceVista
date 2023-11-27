@@ -5,6 +5,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Surveys from "../pages/Surveys";
 import Pro from "../pages/Pro";
+import PrivateRoutes from "./PrivateRoutes";
 
 const router = createBrowserRouter([
     {
@@ -29,7 +30,7 @@ const router = createBrowserRouter([
         },
         {
           path: '/pro',
-          element: <Pro></Pro>
+          element: <PrivateRoutes><Pro></Pro></PrivateRoutes>
         }
       ]
     },

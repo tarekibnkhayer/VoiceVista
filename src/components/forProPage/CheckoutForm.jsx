@@ -1,29 +1,27 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
-// import useAxiosSecure from "../../myHooks/useAxiosSecure";
+import useAxiosSecure from "../../myHooks/useAxiosSecure";
 import useAuth from "../../myHooks/useAuth";
 import Swal from "sweetalert2";
 import moment from "moment";
-import useAxiosPublic from "../../myHooks/useAxiosPublic";
-// TODOs: useAxiosSecure after jwt verify
 
 
 const CheckoutForm =  () => {
   const [error, setError] = useState('');
   const [clientSecret, setClientSecret] = useState('');
   const [transactionId, setTransactionId] = useState('');
-  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
   const {user} = useAuth();
   const stripe = useStripe();
   const elements = useElements();
   const price = 40; 
 
   useEffect(() => {
-     axiosPublic.post('/create-payment-intent', {price: price} )
+     axiosSecure.post('/create-payment-intent', {price, email: user.email} )
      .then(res => {
        setClientSecret(res.data.clientSecret);
     })
-   },[axiosPublic,  price]);
+   },[axiosSecure, price, user]);
 
 
   const handleSubmit = async(e)=> {
@@ -68,9 +66,9 @@ const CheckoutForm =  () => {
           email: user.email,
           price: price,
           date: utcDate,
-  
+          transactionId: transactionId
         }
-        const res = await axiosPublic.post('/payments', payment);
+        const res = await axiosSecure.post('/payments', payment);
         console.log(res.data);
       }
     }

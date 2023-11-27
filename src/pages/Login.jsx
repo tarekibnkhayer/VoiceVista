@@ -1,10 +1,12 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../myHooks/useAuth";
 import Swal from "sweetalert2";
 import { GoogleAuthProvider } from "firebase/auth";
 
 const Login = () => {
     const {loginUser, googleLogin} = useAuth();
+	const location = useLocation();
+	const navigate = useNavigate();
 	const handleLogin = event => {
 		event.preventDefault();
 		const form = event.target;
@@ -14,6 +16,12 @@ const Login = () => {
 		.then(() => {
 			Swal.fire("Logged in Successfully")
 			form.reset();
+			if(location.state){
+				navigate(location.state);
+			}
+			else{
+				navigate('/');
+			}
 	})
 		.catch(err => Swal.fire(err.message));
 	};
@@ -84,7 +92,6 @@ const Login = () => {
 
 		<div className="form-field">
 			<div className="form-control">
-				{/* <a className="link link-underline-hover link-primary text-sm">Dont have an account? Register</a> */}
                 <NavLink className="link link-underline-hover link-primary text-sm" to="/register">Do not have an account? Register</NavLink>
 			</div>
 		</div>
