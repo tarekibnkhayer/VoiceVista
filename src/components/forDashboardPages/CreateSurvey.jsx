@@ -22,6 +22,10 @@ const CreateSurvey = () => {
         title,
         description,
         deadline,
+        yes: 0,
+        no: 0,
+        like: 0,
+        dislike:0
       };
       axiosSecure
       .post(`/surveys?email=${user.email}`, survey)
