@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import { AiOutlineLike ,  AiOutlineDislike} from "react-icons/ai";
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import useRole from '../../myHooks/useRole';
 import useAuth from '../../myHooks/useAuth';
 import useAxiosSecure from '../../myHooks/useAxiosSecure';
 import useSurveys from '../../myHooks/useSurveys';
+import Chart from 'react-apexcharts'
 
 const SurveyCard = ({survey}) => {
     const [hasVoted, setHasVoted] = useState(false);
@@ -43,14 +44,20 @@ const SurveyCard = ({survey}) => {
         setHasVoted(true);
         axiosSecure.patch(`/addVoter?id=${id}`, {email: user.email});
         const value = 'yes';
-        axiosSecure.patch(`/specificSurvey?id=${id}`, {value});
+        axiosSecure.patch(`/specificSurvey?id=${id}`, {value})
+        .then(() => {
+            refetch();
+        })
     };
     const handleNo = id => {
         axiosSecure.patch(`/votedSurveys?email=${user.email}&id=${id}`);
         setHasVoted(true);
         axiosSecure.patch(`/addVoter?id=${id}`, {email: user.email});
         const value = 'no';
-        axiosSecure.patch(`/specificSurvey?id=${id}`,{value});
+        axiosSecure.patch(`/specificSurvey?id=${id}`,{value})
+        .then(() => {
+            refetch();
+        })
     };
     const handleLike = id => {
         setHasSelected(true);
@@ -123,6 +130,31 @@ const SurveyCard = ({survey}) => {
 		</div>
 	</div>
 </div>
+{/* chart show if user votedSurveyIds listed the survey or user just give the vote*/}
+{
+    hasVoted &&
+      <div >
+    <React.Fragment>
+    <div>
+            <Chart
+            type='pie'
+            width={200}
+            height={250}
+            series={[survey.yes, survey.no]} 
+            options={
+                {
+                labels: ['Yes', 'No'],
+                legend: {position: 'bottom'}
+                
+            }
+        }
+            >
+
+            </Chart>
+        </div>
+    </React.Fragment>
+</div>
+}
         </div>
     );
 };
