@@ -10,6 +10,8 @@ const SurveyCard = ({survey}) => {
     const [hasVoted, setHasVoted] = useState(false);
     const [hasSelected, setHasSelected] = useState(false);
     const [roleBasedSurvey, setRoleBasedSurvey] = useState(false);
+    const [alreadyVoted, setAlreadyVoted] = useState(false);
+    const [voters, setVoters] = useState([]);
     const [,, refetch] = useSurveys();
     const axiosSecure = useAxiosSecure();
     const {user} = useAuth();
@@ -20,13 +22,42 @@ const SurveyCard = ({survey}) => {
             setRoleBasedSurvey(true);
         }
     }, [user, role]);
+    useEffect(() => {
+        const storedVoters = JSON.parse(localStorage.getItem('voters')) || [];
+        if(!arraysAreEqual(storedVoters, voters)){
+            setVoters(storedVoters);
+        }
+        if(voters.includes(user?.email)){
+            setAlreadyVoted(true);
+        }
+    },[user?.email, voters]);
+    // Helper function to check if two arrays are equal
+    const arraysAreEqual = (arr1, arr2) => {
+    return (
+      arr1.length === arr2.length &&
+      arr1.every((value, index) => value === arr2[index])
+      );
+      };
+  
     const handleYes = id => {
+        axiosSecure.get(`/getVoters?id=${id}`)
+        .then(res => {
+            setVoters(res.data);
+            localStorage.setItem('voters', JSON.stringify(res.data));
+        })
         setHasVoted(true);
+        axiosSecure.patch(`/addVoter?id=${id}`, {email: user.email});
         const value = 'yes';
         axiosSecure.patch(`/specificSurvey?id=${id}`, {value});
     };
     const handleNo = id => {
+        axiosSecure.get(`/getVoters?id=${id}`)
+        .then(res => {
+            console.log(res.data);
+            setVoters(res.data);
+        })
         setHasVoted(true);
+        axiosSecure.patch(`/addVoter?id=${id}`, {email: user.email});
         const value = 'no';
         axiosSecure.patch(`/specificSurvey?id=${id}`,{value});
     };
@@ -63,8 +94,8 @@ const SurveyCard = ({survey}) => {
 		<h2 className="card-header">{survey.title}</h2>
         <h3 className='font-bold'>Category: {survey.categories}</h3>
 		<p className="text-content2">{survey.description}</p>
-        <button className='btn btn-outline-primary' onClick={() => handleYes(survey._id)} disabled={hasVoted || !roleBasedSurvey}>Yes</button>
-        <button className='btn btn-outline-secondary' onClick={() => handleNo(survey._id)} disabled={!roleBasedSurvey || hasVoted}>No</button>
+        <button className='btn btn-outline-primary' onClick={() => handleYes(survey._id)} disabled={hasVoted || !roleBasedSurvey || alreadyVoted}>Yes</button>
+        <button className='btn btn-outline-secondary' onClick={() => handleNo(survey._id)} disabled={!roleBasedSurvey || hasVoted || alreadyVoted}>No</button>
         <div className='flex gap-4'>
        <button className='flex items-center' onClick={() => handleLike(survey._id)} disabled={hasSelected || !roleBasedSurvey}> <AiOutlineLike className='text-xl'/>Like {survey.like}</button>
        <button className='flex items-center' onClick={() => handleDisLike(survey._id)} disabled={hasSelected || !roleBasedSurvey}> <AiOutlineDislike className='text-xl'/>Dislike{survey.dislike}</button>
