@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosPublic = axios.create({
-    baseURL: "http://localhost:2626",
+    baseURL: "https://voic-vista-server.vercel.app",
     withCredentials: true
 });
 
