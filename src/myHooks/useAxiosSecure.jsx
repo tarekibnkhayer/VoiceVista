@@ -4,7 +4,8 @@ import useAuth from './useAuth'
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 const axiosSecure = axios.create({
-    baseURL: 'https://voic-vista-server.vercel.app',
+    // baseURL: 'https://voic-vista-server.vercel.app',
+    baseURL: 'http://localhost:2626',
     withCredentials: true
 });
 

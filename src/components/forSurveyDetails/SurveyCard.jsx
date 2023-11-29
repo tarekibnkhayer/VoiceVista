@@ -112,7 +112,7 @@ const SurveyCard = ({survey}) => {
         </div>
            <div className='flex flex-col gap-3'>
            <textarea className='border p-2' ref={commentRef}></textarea>
-            <button className='btn btn-primary' onClick={() => handleAddComment(survey._id)}>Add comment</button>
+            <button className='btn btn-primary' onClick={() => handleAddComment(survey._id)} disabled={role !== 'pro-user'}>Add comment</button>
            </div>
 	</div>
 </div>
