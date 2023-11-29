@@ -39,6 +39,7 @@ const SurveyCard = ({survey}) => {
         })
     };
     const handleDisLike = (id) => {
+        console.log(id);
         setHasSelected(true);
         const value = 'dislike';
         axiosSecure.patch(`/specificSurvey?id=${id}`,{value})
@@ -47,10 +48,12 @@ const SurveyCard = ({survey}) => {
         })
     };
     const handleAddComment = (id) => {
+        console.log(id);
         const comment = commentRef.current.value;
         axiosSecure.patch(`/addComment?id=${id}`, {user: user.displayName, comment, photo: user.photoURL})
         .then(() => {
             refetch();
+            commentRef.current.value = '';
         })
     }
     return (
@@ -65,14 +68,14 @@ const SurveyCard = ({survey}) => {
         <div className='flex gap-4'>
        <button className='flex items-center' onClick={() => handleLike(survey._id)} disabled={hasSelected || !roleBasedSurvey}> <AiOutlineLike className='text-xl'/>Like {survey.like}</button>
        <button className='flex items-center' onClick={() => handleDisLike(survey._id)} disabled={hasSelected || !roleBasedSurvey}> <AiOutlineDislike className='text-xl'/>Dislike{survey.dislike}</button>
-       <label className="btn btn-primary" htmlFor="modal-1">
+       <label className="btn btn-primary" htmlFor={`modal-${survey._id}`}>
         Comments
        </label>
-<input className="modal-state" id="modal-1" type="checkbox" />
+<input className="modal-state" id={`modal-${survey._id}`} type="checkbox" />
 <div className="modal">
-	<label className="modal-overlay" htmlFor="modal-1"></label>
+	<label className="modal-overlay" htmlFor={`modal-${survey._id}`} ></label>
 	<div className="modal-content flex flex-col gap-5">
-		<label htmlFor="modal-1" className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</label>
+		<label htmlFor={`modal-${survey._id}`}  className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</label>
 		<h2 className="text-xl">Comments</h2>
 		<div className='space-y-4'>
             {
