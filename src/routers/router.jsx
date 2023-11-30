@@ -10,6 +10,9 @@ import SurveyorDashboard from "../pages/SurveyorDashboard";
 import CreateSurvey from "../components/forDashboardPages/CreateSurvey";
 import SurveyDetails from "../pages/SurveyDetails";
 import UpdateSurvey from "../components/forDashboardPages/UpdateSurvey";
+import AdminDashboard from "../pages/AdminDashboard";
+import AdminSurveys from "../components/forAdminDashboard/AdminSurveys";
+import ManageUsers from "../components/forAdminDashboard/ManageUsers";
 
 const router = createBrowserRouter([
     {
@@ -51,10 +54,23 @@ const router = createBrowserRouter([
         {
           path: '/updateSurvey/:id',
           element: <UpdateSurvey></UpdateSurvey>
-          
+        }
+      ],
+    },
+    {
+      path: '/adminDashboard',
+      element: <AdminDashboard></AdminDashboard>,
+      children: [
+        {
+          path: '/adminDashboard/surveys',
+          element: <AdminSurveys></AdminSurveys>
+        },
+        {
+          path: '/adminDashboard/manageUsers',
+          element: <ManageUsers></ManageUsers>
         }
       ]
-    },
+    }
   
   ]);
   export default router;

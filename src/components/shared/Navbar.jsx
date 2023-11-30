@@ -13,7 +13,7 @@ const Navbar = () => {
 	<NavLink to="/" className="ml-5">Home</NavLink>
   {/* role based dashboard: */}
   {
-    !isPending && role === 'admin' && <NavLink to="/dashboard/adminHome" className="ml-5">Dashboard</NavLink>
+    !isPending && role === 'admin' && <NavLink to="/adminDashboard/surveys" className="ml-5">Dashboard</NavLink>
   }
   {
     !isPending && role === 'surveyor' && <NavLink to="/surveyorDashboard" className="ml-5">Dashboard</NavLink>
@@ -68,9 +68,6 @@ const Navbar = () => {
                 <AiOutlineMenu className="text-xl"></AiOutlineMenu>
               </label>
               <div className="dropdown-menu dropdown-menu-right-bottom">
-                {/* <a className="dropdown-item text-sm">Profile</a>
-		<a tabIndex="-1" className="dropdown-item text-sm">Account settings</a>
-		<a tabIndex="-1" className="dropdown-item text-sm">Subscriptions</a> */}
                 <NavLink to="/" className="dropdown-item text-sm">
                   Home
                 </NavLink>
