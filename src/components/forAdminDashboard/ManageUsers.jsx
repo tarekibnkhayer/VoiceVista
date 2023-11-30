@@ -6,7 +6,7 @@ import useUsers from "../../myHooks/useUsers";
 
 
 const ManageUsers = () => {
-    const [allUsers, isPending] = useUsers();
+    const [allUsers, isPending, refetch] = useUsers();
     const [users, setUsers] = useState([]);
     useEffect(() => {
         if(!isPending){
@@ -24,7 +24,21 @@ const ManageUsers = () => {
         }else{
             setUsers(allUsers);
         }
-    }
+    };
+    const handleMakeAdmin = id => {
+        const role = 'admin';
+        axiosSecure.patch(`/roleChange?id=${id}&role=${role}`)
+        .then(() => {
+            refetch();
+        })
+    };
+    const handleMakeSurveyor = id => {
+        const role = 'surveyor';
+        axiosSecure.patch(`/roleChange?id=${id}&role=${role}`)
+        .then(() => {
+            refetch();
+        })
+    };
     return (
         <div className="mt-12 max-w-6xl mx-auto">
             <SectionTitle title="Manage Users"></SectionTitle>
@@ -75,6 +89,8 @@ const ManageUsers = () => {
 				<th>Name</th>
 				<th>Email</th>
 				<th>Role</th>
+                <th>Action</th>
+                <th>Action</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -84,6 +100,12 @@ const ManageUsers = () => {
                     <td>{user.name}</td>
                     <td>{user.email}</td>
                     <td>{user.role}</td>
+                    <td>
+                <button className="btn btn-primary text-white w-full" onClick={() => handleMakeAdmin(user._id)} disabled={user.role !== 'user'}>Make Admin</button>
+                </td>
+                <td>
+                <button className="btn btn-primary text-white w-full" onClick={() => handleMakeSurveyor(user._id)} disabled={user.role !== 'user'}>Make Surveyor</button>
+                </td> 
                 </tr>)
             }
 		</tbody>
