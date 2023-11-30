@@ -20,6 +20,29 @@ const Surveys = () => {
 	.then(res =>  {
 		setSurveys(res.data);
 	})
+   };
+   const handleVoteChange = e => {
+	e.preventDefault();
+	const selectedVote = e.target.value;
+	if(selectedVote === 'a'){
+		setSurveys(allSurvey);
+	}
+	if(selectedVote === 'b'){
+		const min = 5;
+		const max = 20;
+		axiosPublic.get(`/filterSurveyByVote?minVotes=${min}&maxVotes=${max}`)
+		.then(res => {
+			setSurveys(res.data);
+		})
+	}
+	if(selectedVote === 'c'){
+		const min = 0;
+		const max = 4;
+		axiosPublic.get(`/filterSurveyByVote?minVotes=${min}&maxVotes=${max}`)
+		.then(res => {
+			setSurveys(res.data)
+		})
+	}
    }
     return (
         <div className="mt-24">
@@ -77,10 +100,10 @@ const Surveys = () => {
 
 						<div className="menu-item-collapse">
 							<div className="min-h-0">
-                                 <select name="categories" className="input  max-w-full">
-              <option value="Life Style">5 or more voted</option>
-              <option value="Technology">5 voted</option>
-              <option value="Health">3 voted</option>
+                                 <select name="vote" className="input  max-w-full" onChange={handleVoteChange}>
+              <option value="a">All</option>
+              <option value="b">5 to 20 voted</option>
+              <option value="c">0 to 4 voted</option>
             </select>
 							</div>
 						</div>

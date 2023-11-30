@@ -6,11 +6,11 @@ import SectionTitle from "../shared/SectionTitle";
 const HowItWorks = () => {
     const steps = [
        {id: 1,title: 'Login', description: "Login thorough your email or google account"},
-       {id: 2,title: 'Browse Job', description: "To find your expected job browse job in job categories.There are tabs.When you click in one tab it will show you this category job"},
-       {id: 3,title: 'Bid in  the Job', description: "After choosing your expected job , click 'Bid Now' button  and then fill up the form of 'Place Your Bid'. And click  'Bid On the Project' button"},
-       {id: 4,title: 'Check Your Bids', description:"After bidding it will automatically redirect in 'My bids' page where you can see your bids"},
-       {id: 5,title: 'Start Your Work', description: "Initially bidding status is 'pending' .After job owner accept your request it will be 'in progress'.And now you can start your work"},
-       {id: 6,title: 'Complete Your Work ', description: "After finishing your work you simply press complete button and it will show your work is done"}
+       {id: 2,title: 'Go to SurveyDetails page', description: "Please go to SurveyDetails page and then if you already not give vote the survey or deadline is not passed you can vote the survey.And after voting it show you the result in pie chart."},
+       {id: 3,title: 'Like or DesLike', description: "You can like or dislike the survey.If you don't like the content of the survey you can report it"},
+       {id: 4,title: 'Read Comments', description:"You can read comment of other Pro users.And comments also contain user photo and user Name"},
+       {id: 5,title: 'To write Comments', description: "To write comments you need to be a pro user.If you are only a logged in user you can only read the comments"},
+       {id: 6,title: 'To be a Pro User', description: "You can be Pro user if you pay us 40$ through stripe payment gateway. It is very easy to pay.Just give your card number , expiry date of the card an CVC"}
     ]
     return (
             <div className="lg:max-w-6xl mx-auto md:max-w-2xl max-w-xs">
