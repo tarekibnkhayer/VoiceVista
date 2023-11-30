@@ -4,7 +4,6 @@ import useSurveys from "../myHooks/useSurveys";
 
 const SurveyDetails = () => {
     const [allSurvey, isPending] = useSurveys();
-    console.log(allSurvey);
     return (
         <div className="mt-24 grid grid-cols-2 gap-5">
            {

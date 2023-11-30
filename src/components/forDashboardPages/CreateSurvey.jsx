@@ -8,6 +8,7 @@ const CreateSurvey = () => {
     const {user} = useAuth();
     const axiosSecure = useAxiosSecure();
     const navigate = useNavigate();
+  const currentDate = new Date().toISOString().split("T")[0];
     const handleAddSurvey = (e) => {
       e.preventDefault();
       const form = e.target;
@@ -76,7 +77,7 @@ const CreateSurvey = () => {
               <div className="form-control">
                 <input
                   name="deadline"
-                  placeholder="Type here in BDT"
+                  min={currentDate}
                   required
                   type="date"
                   className="input max-w-full"

@@ -6,6 +6,9 @@ import useAuth from '../../myHooks/useAuth';
 import useAxiosSecure from '../../myHooks/useAxiosSecure';
 import useSurveys from '../../myHooks/useSurveys';
 import Chart from 'react-apexcharts'
+import moment from 'moment/moment';
+import useAxiosPublic from '../../myHooks/useAxiosPublic';
+import Swal from 'sweetalert2';
 
 const SurveyCard = ({survey}) => {
     const [hasVoted, setHasVoted] = useState(false);
@@ -13,10 +16,14 @@ const SurveyCard = ({survey}) => {
     const [roleBasedSurvey, setRoleBasedSurvey] = useState(false);
     const [votedSurveyIds, setVotedSurveyIds] = useState([]);
     const [,, refetch] = useSurveys();
+    const axiosPublic = useAxiosPublic();
     const axiosSecure = useAxiosSecure();
     const {user} = useAuth();
     const [role] = useRole();
     const commentRef = useRef();
+    const deadlineDate = moment(survey.deadline).format('YYYY-MM-DD');
+    const currentDate = moment();
+    const isDeadlinePassed = currentDate > moment(deadlineDate);
     useEffect(() => {
         if (user && (role === 'user' || role === 'pro-user')) {
             setRoleBasedSurvey(true);
@@ -68,7 +75,6 @@ const SurveyCard = ({survey}) => {
         })
     };
     const handleDisLike = (id) => {
-        console.log(id);
         setHasSelected(true);
         const value = 'dislike';
         axiosSecure.patch(`/specificSurvey?id=${id}`,{value})
@@ -76,6 +82,13 @@ const SurveyCard = ({survey}) => {
             refetch();
         })
     };
+    const handleReport = id => {
+        const value = 'report';
+        axiosPublic.patch(`/specificSurvey?id=${id}`,{value})
+        .then(() => {
+            Swal.fire('Your report is recorded');
+        })
+    }
     const handleAddComment = (id) => {
         console.log(id);
         const comment = commentRef.current.value;
@@ -92,8 +105,8 @@ const SurveyCard = ({survey}) => {
 		<h2 className="card-header">{survey.title}</h2>
         <h3 className='font-bold'>Category: {survey.categories}</h3>
 		<p className="text-content2">{survey.description}</p>
-        <button className='btn btn-outline-primary' onClick={() => handleYes(survey._id)} disabled={hasVoted || !roleBasedSurvey }>Yes</button>
-        <button className='btn btn-outline-secondary' onClick={() => handleNo(survey._id)} disabled={!roleBasedSurvey || hasVoted}>No</button>
+        <button className='btn btn-outline-primary' onClick={() => handleYes(survey._id)} disabled={hasVoted || !roleBasedSurvey || isDeadlinePassed }>Yes</button>
+        <button className='btn btn-outline-secondary' onClick={() => handleNo(survey._id)} disabled={!roleBasedSurvey || hasVoted || isDeadlinePassed}>No</button>
         <div className='flex gap-4'>
        <button className='flex items-center' onClick={() => handleLike(survey._id)} disabled={hasSelected || !roleBasedSurvey}> <AiOutlineLike className='text-xl'/>Like {survey.like}</button>
        <button className='flex items-center' onClick={() => handleDisLike(survey._id)} disabled={hasSelected || !roleBasedSurvey}> <AiOutlineDislike className='text-xl'/>Dislike{survey.dislike}</button>
@@ -124,9 +137,12 @@ const SurveyCard = ({survey}) => {
 	</div>
 </div>
         </div>
-		<div className="card-footer">
-			<button className="bg-[#e63946] text-white btn">Report</button>
-            <p className='text-xs'>TimeStamps: {survey.createdAt}</p>
+		<div className="card-footer ">
+			<button className="bg-[#e63946] text-white btn" onClick={() => handleReport(survey._id)} disabled={!roleBasedSurvey}>Report</button>
+            <div>
+            <p className='text-xs'>Created : {survey.createdAt}</p>
+            <p className='text-xs'>Deadline: {survey.deadline}</p>
+            </div>
 		</div>
 	</div>
 </div>
@@ -143,17 +159,46 @@ const SurveyCard = ({survey}) => {
             series={[survey.yes, survey.no]} 
             options={
                 {
+                    noData: {text: 'No vote'},
                 labels: ['Yes', 'No'],
                 legend: {position: 'bottom'}
                 
-            }
+            } 
         }
             >
 
             </Chart>
         </div>
     </React.Fragment>
-</div>
+</div>  || isDeadlinePassed  && <div >
+    <p>Deadline is Passed. You cannot vote it.</p>
+   {
+    survey.totalVotes? <>
+     <React.Fragment>
+    <div>
+            <Chart
+            type='pie'
+            width={200}
+            height={250}
+            series={[survey.yes, survey.no]} 
+            options={
+                {
+                    noData: {text: 'No vote'},
+                labels: ['Yes', 'No'],
+                legend: {position: 'bottom'}
+                
+            } 
+        }
+            >
+
+            </Chart>
+        </div>
+    </React.Fragment>
+    </>: <>
+    <p className='mt-12 text-red-600 text-xl'>No Voter Founded Before Deadline</p>
+    </>
+   }
+</div> 
 }
         </div>
     );

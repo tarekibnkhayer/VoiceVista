@@ -51,7 +51,7 @@ const Navbar = () => {
                 Login
               </NavLink>
               <img
-                src="https://i.imgur.com/Ci5vu8p.png"
+                src="https://i.imgur.com/BSXLY0r.png"
                 alt=""
                 className="w-12"
               />
