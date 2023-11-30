@@ -13,6 +13,7 @@ import UpdateSurvey from "../components/forDashboardPages/UpdateSurvey";
 import AdminDashboard from "../pages/AdminDashboard";
 import AdminSurveys from "../components/forAdminDashboard/AdminSurveys";
 import ManageUsers from "../components/forAdminDashboard/ManageUsers";
+import DahboardPayments from "../components/forAdminDashboard/DahboardPayments";
 
 const router = createBrowserRouter([
     {
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
         {
           path: '/adminDashboard/manageUsers',
           element: <ManageUsers></ManageUsers>
+        },
+        {
+          path: '/adminDashboard/payments',
+          element: <DahboardPayments></DahboardPayments>
         }
       ]
     }
