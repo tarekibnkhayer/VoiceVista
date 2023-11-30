@@ -21,6 +21,19 @@ const Surveys = () => {
 		setSurveys(res.data);
 	})
    };
+   const handleTitleChange = e => {
+	e.preventDefault();
+	const selectedTitle = e.target.value;
+	if(selectedTitle){
+		axiosPublic.get(`/selectedSurveyTitle?selectedTitle=${selectedTitle}`)
+	.then(res => {
+		setSurveys(res.data);
+	})
+	}
+	else{
+		setSurveys(allSurvey);
+	}
+   }
    const handleVoteChange = e => {
 	e.preventDefault();
 	const selectedVote = e.target.value;
@@ -124,11 +137,11 @@ const Surveys = () => {
 
 						<div className="menu-item-collapse">
 							<div className="min-h-0">
-                                 <select name="categories" className="input  max-w-full">
-              <option value="Life Style">All</option>
-              <option value="Life Style">What do you think?</option>
-              <option value="Technology">Traveling</option>
-              <option value="Health">What do you prefer?</option>
+                                 <select name="categories" className="input  max-w-full" onChange={handleTitleChange}>
+              <option value="">All</option>
+              <option value="What do you think?">What do you think?</option>
+              <option value="Travelling">Traveling</option>
+              <option value="What do you prefer?">What do you prefer?</option>
             </select>
 							</div>
 						</div>
