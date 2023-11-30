@@ -71,17 +71,14 @@ const Navbar = () => {
                 <NavLink to="/" className="dropdown-item text-sm">
                   Home
                 </NavLink>
-                <NavLink to="/addJob" className="dropdown-item text-sm">
-                  Add job
+                <NavLink to="/surveys" className="dropdown-item text-sm">
+                  Surveys
                 </NavLink>
-                <NavLink to="/myPostedJobs" className="dropdown-item text-sm">
-                  My posted jobs
+                <NavLink to="/surveyDetails" className="dropdown-item text-sm">
+                  Survey Details
                 </NavLink>
-                <NavLink to="/myBids" className="dropdown-item text-sm">
-                  My bids
-                </NavLink>
-                <NavLink to="/bidRequests" className="dropdown-item text-sm">
-                  Bid requests
+                <NavLink to="/pro" className="dropdown-item text-sm">
+                  pro
                 </NavLink>
               </div>
             </div>
